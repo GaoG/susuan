@@ -1,0 +1,6 @@
+framework module Pods_Sum {
+  umbrella header "Pods-Sum-umbrella.h"
+
+  export *
+  module * { export * }
+}
