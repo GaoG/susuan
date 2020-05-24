@@ -44,8 +44,9 @@
     [super viewDidLoad];
 
 //        [self performSelector:@selector(ceshi) withObject:nil afterDelay:0];
-    
-    
+//
+//
+//    return;
 
     
     self.progressView.frame = self.view.bounds;
@@ -70,9 +71,10 @@
 
     self.submitView.frame = self.view.bounds;
     [self.view addSubview:self.submitView];
-//    [self.submitView start];
+    [self.submitView start];
     
     
+    return;
     self.numberScrollView.frame = self.view.bounds;
     [self.view addSubview:self.numberScrollView];
 
@@ -95,6 +97,24 @@
     
 }
 
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    
+    NSMutableArray *arr = [NSMutableArray array];
+    
+    for (int i= 0; i<20; i++) {
+        int a = arc4random() % 10000000000000;
+        
+        NSString *str = [NSString stringWithFormat:@"%010d", a];
+        
+        //        NSString * text = [NSString stringWithFormat:@"%u",arc4random()];
+        [arr addObject:str];
+    }
+    
+    self.numberScrollView.dataArr = arr;
+    
+    
+}
 
 -(void)ceshi {
     

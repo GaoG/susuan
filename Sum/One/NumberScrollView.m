@@ -17,7 +17,11 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *twoImageView;
 
-@property (weak, nonatomic) IBOutlet UIView *blackView;
+@property (weak, nonatomic) IBOutlet UIView *bgView;
+
+@property (weak, nonatomic) IBOutlet UILabel *startLocation;
+
+
 
 @property (nonatomic, strong)UIView *scrollView;
 
@@ -46,7 +50,12 @@
 -(void)setDataArr:(NSMutableArray *)dataArr {
     
     _dataArr = dataArr;
-    self.scrollView.frame = CGRectMake(0, self.blackView.height/2-35, SCREEN_WIDTH-200, dataArr.count*70);
+    
+    
+    
+    self.scrollView.frame = CGRectMake(0,self.bgView.height/2-35, SCREEN_WIDTH-200, dataArr.count*70);
+    
+    
 //    self.scrollView.backgroundColor = UIColor.redColor;
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 
@@ -60,10 +69,11 @@
         [self.scrollView addSubview:label];
     }
     
-    self.blackView.clipsToBounds = YES;
-    [self.blackView addSubview:self.scrollView];
+    self.bgView.clipsToBounds = YES;
+    [self.bgView addSubview:self.scrollView];
+
     [_gcdTimer invalidate];
-    _gcdTimer = nil;
+
     @weakify(self)
     _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:1 block:^{
         @strongify(self)
@@ -81,9 +91,9 @@
     
     _currentIndex ++;
     
-    float typeY = self.scrollView.y;
-    
-    self.scrollView.y = typeY-70;
+//    float typeY = self.scrollView.y;
+//    typeY-
+    self.scrollView.y -= 70;
     
     
     UILabel *oldLabel = [self.scrollView viewWithTag:_currentIndex-1+1000];
@@ -96,7 +106,7 @@
      [label setText:[_dataArr objectAtIndexVerify:_currentIndex] withKeyWord:@[@"1",@"4",@"6",@"8"] withKeyColor:UIColor.redColor];
     
     
-    _currentIndex == self.dataArr.count ? [_gcdTimer stop] :nil;
+    _currentIndex == self.dataArr.count ? [_gcdTimer invalidate] :nil;
     
     
 }

@@ -30,6 +30,8 @@
 
 @implementation SecondViewController
 
+
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -40,6 +42,22 @@
     [self.view addSubview:self.showNumberView];
     
 }
+
+
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    
+    static int a = 0;
+    
+    a++;
+    
+    
+    [self.showNumberView setText:[NSString stringWithFormat:@"%010ld",arc4random() % 10000000000000] andColor:2];
+    
+    
+    
+}
+
 
 -(StartView *)startView {
     

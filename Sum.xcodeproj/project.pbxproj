@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210D5297247A4B6200B3A7EA /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 210D5296247A4B6200B3A7EA /* ThirdViewController.m */; };
 		217A173224790EAB005D49A4 /* NumberScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 217A173124790EAB005D49A4 /* NumberScrollView.m */; };
 		217A173424790EC1005D49A4 /* NumberScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 217A173324790EC1005D49A4 /* NumberScrollView.xib */; };
 		217A1737247910DC005D49A4 /* UILabel+WordSpacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 217A1736247910DC005D49A4 /* UILabel+WordSpacing.m */; };
@@ -40,6 +41,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		210D5295247A4B6200B3A7EA /* ThirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
+		210D5296247A4B6200B3A7EA /* ThirdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
 		217A173024790EAB005D49A4 /* NumberScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumberScrollView.h; sourceTree = "<group>"; };
 		217A173124790EAB005D49A4 /* NumberScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NumberScrollView.m; sourceTree = "<group>"; };
 		217A173324790EC1005D49A4 /* NumberScrollView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NumberScrollView.xib; sourceTree = "<group>"; };
@@ -106,6 +109,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		210D5294247A4B2D00B3A7EA /* Third */ = {
+			isa = PBXGroup;
+			children = (
+				210D5295247A4B6200B3A7EA /* ThirdViewController.h */,
+				210D5296247A4B6200B3A7EA /* ThirdViewController.m */,
+			);
+			path = Third;
+			sourceTree = "<group>";
+		};
 		217A173F247928D6005D49A4 /* One */ = {
 			isa = PBXGroup;
 			children = (
@@ -200,6 +212,7 @@
 				217A174B2479D657005D49A4 /* Common */,
 				217A173F247928D6005D49A4 /* One */,
 				217A1740247928E8005D49A4 /* Second */,
+				210D5294247A4B2D00B3A7EA /* Third */,
 				217A17412479292F005D49A4 /* Tool */,
 				21B963FD24781919008B246B /* Main.storyboard */,
 				21B964002478191B008B246B /* Assets.xcassets */,
@@ -225,7 +238,6 @@
 				EC86B6A72729D152416BB323 /* Pods-Sum.debug.xcconfig */,
 				D6B98E845535B44AC972FF83 /* Pods-Sum.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -240,6 +252,7 @@
 				21B963F024781919008B246B /* Sources */,
 				21B963F124781919008B246B /* Frameworks */,
 				21B963F224781919008B246B /* Resources */,
+				FEF44BEC8F08E417B06EF094 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -326,6 +339,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		FEF44BEC8F08E417B06EF094 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sum/Pods-Sum-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sum/Pods-Sum-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sum/Pods-Sum-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -343,6 +373,7 @@
 				21B964072478191B008B246B /* main.m in Sources */,
 				217A17532479D964005D49A4 /* ShowNumberView.m in Sources */,
 				21B963F924781919008B246B /* AppDelegate.m in Sources */,
+				210D5297247A4B6200B3A7EA /* ThirdViewController.m in Sources */,
 				217A17442479D347005D49A4 /* NSArray+ErrorHandle.m in Sources */,
 				21B9640F2478AFF9008B246B /* IpConfigView.m in Sources */,
 				217A173224790EAB005D49A4 /* NumberScrollView.m in Sources */,

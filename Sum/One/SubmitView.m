@@ -13,12 +13,21 @@
 /// 计时器
 @property (weak, nonatomic) IBOutlet UILabel *chronographL;
 
+
+@property (weak, nonatomic) IBOutlet UILabel *minuteL;
+
+@property (weak, nonatomic) IBOutlet UILabel *minuteR;
+
+
 @property (weak, nonatomic) IBOutlet UILabel *secondL;
+
 @property (weak, nonatomic) IBOutlet UILabel *secondR;
 
+
 @property (weak, nonatomic) IBOutlet UILabel *msecL;
-@property (weak, nonatomic) IBOutlet UILabel *msecM;
+
 @property (weak, nonatomic) IBOutlet UILabel *msecR;
+
 /// 提交
 @property (weak, nonatomic) IBOutlet UIButton *submitBut;
 
@@ -58,12 +67,17 @@
     NSString *strDate = [self.dateFormatter stringFromDate:timeToShow];
     NSLog(@"%@ ===",strDate);
     
-    _secondL.text=[strDate substringWithRange:NSMakeRange(0, 1)];
-    _secondR.text=[strDate substringWithRange:NSMakeRange(1, 1)];
+    _chronographL.text = strDate;
     
-    _msecL.text=[strDate substringWithRange:NSMakeRange(3, 1)];
-    _msecM.text=[strDate substringWithRange:NSMakeRange(4, 1)];
-    _msecR.text=[strDate substringWithRange:NSMakeRange(5, 1)];
+    _minuteL.text=[strDate substringWithRange:NSMakeRange(0, 1)];
+    _minuteR.text=[strDate substringWithRange:NSMakeRange(1, 1)];
+    
+    _secondL.text=[strDate substringWithRange:NSMakeRange(3, 1)];
+    _secondR.text=[strDate substringWithRange:NSMakeRange(4, 1)];
+
+    _msecL.text=[strDate substringWithRange:NSMakeRange(6, 1)];
+//    _msecM.text=[strDate substringWithRange:NSMakeRange(4, 1)];
+    _msecR.text=[strDate substringWithRange:NSMakeRange(7, 1)];
     
 }
 
@@ -71,7 +85,7 @@
     
     sender.enabled = NO;
     
-     [self.gcdTimer stop];
+     [self.gcdTimer invalidate];
 }
 
 
@@ -95,7 +109,7 @@
     if(!_dateFormatter){
         
         _dateFormatter = [[NSDateFormatter alloc] init];
-        [_dateFormatter setDateFormat:@"ss SSS"];
+        [_dateFormatter setDateFormat:@"mm:ss:SS"];
         [_dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
         
     }
