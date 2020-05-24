@@ -46,6 +46,13 @@
 */
 
 
+-(void)setSelectedStringArr:(NSMutableArray *)selectedStringArr {
+    
+    _selectedStringArr = selectedStringArr;
+    
+    
+}
+
 
 -(void)setDataArr:(NSMutableArray *)dataArr {
     
@@ -65,15 +72,28 @@
         UILabel  *label = [[UILabel alloc]initWithFrame:CGRectMake(0, i*70, self.scrollView.width, 70)];
         label.textColor = [UIColor grayColor];
         label.tag = i+1000;
-        [label setText:_dataArr[i] withKeyWord:@[] withKeyColor:UIColor.redColor];
+        
+        if (i ==0) {
+            NSString *fristStr =  [_selectedStringArr objectAtIndexVerify:i];
+            [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:[fristStr componentsSeparatedByString:@""] withKeyColor:UIColor.redColor];
+        }
+        [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:@[] withKeyColor:UIColor.redColor];
         [self.scrollView addSubview:label];
     }
     
     self.bgView.clipsToBounds = YES;
     [self.bgView addSubview:self.scrollView];
 
-    [_gcdTimer invalidate];
+ 
+    
+}
 
+
+/// 开始滚动  设置时间
+- (void)scrollWithSpace:(NSInteger)space {
+    
+    [_gcdTimer invalidate];
+    
     @weakify(self)
     _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:1 block:^{
         @strongify(self)
@@ -82,10 +102,8 @@
     self.currentIndex = 0;
     [_gcdTimer fire];
     
+    
 }
-
-
-
 
 -(void)updateUI{
     
@@ -103,10 +121,15 @@
     
    UILabel *label = [self.scrollView viewWithTag:_currentIndex+1000];
     
-     [label setText:[_dataArr objectAtIndexVerify:_currentIndex] withKeyWord:@[@"1",@"4",@"6",@"8"] withKeyColor:UIColor.redColor];
+    NSString *selectStr =  [self.selectedStringArr objectAtIndexVerify:_currentIndex];
     
+     [label setText:[_dataArr objectAtIndexVerify:_currentIndex] withKeyWord:[selectStr componentsSeparatedByString:@""] withKeyColor:UIColor.redColor];
     
-    _currentIndex == self.dataArr.count ? [_gcdTimer invalidate] :nil;
+    if(_currentIndex == self.dataArr.count ){
+        [_gcdTimer invalidate];
+        self.scrollEndBlock ? self.scrollEndBlock() : nil;
+    }
+    
     
     
 }

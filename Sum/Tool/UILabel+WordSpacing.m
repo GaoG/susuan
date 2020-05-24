@@ -16,6 +16,10 @@
         text = @"";
     }
     
+    if (!keywords) {
+        keywords = @[];
+    }
+    
     //设置字间距
     NSDictionary *dic = @{NSKernAttributeName:@30.f};
     NSMutableAttributedString * attributedString =     [[NSMutableAttributedString alloc] initWithString:text attributes:dic];

@@ -3,11 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		210D5297247A4B6200B3A7EA /* ThirdViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 210D5296247A4B6200B3A7EA /* ThirdViewController.m */; };
+		210D52EB247AC24700B3A7EA /* WebSocketManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 210D52EA247AC24700B3A7EA /* WebSocketManager.m */; };
 		217A173224790EAB005D49A4 /* NumberScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 217A173124790EAB005D49A4 /* NumberScrollView.m */; };
 		217A173424790EC1005D49A4 /* NumberScrollView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 217A173324790EC1005D49A4 /* NumberScrollView.xib */; };
 		217A1737247910DC005D49A4 /* UILabel+WordSpacing.m in Sources */ = {isa = PBXBuildFile; fileRef = 217A1736247910DC005D49A4 /* UILabel+WordSpacing.m */; };
@@ -43,6 +44,8 @@
 /* Begin PBXFileReference section */
 		210D5295247A4B6200B3A7EA /* ThirdViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThirdViewController.h; sourceTree = "<group>"; };
 		210D5296247A4B6200B3A7EA /* ThirdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
+		210D52E9247AC24700B3A7EA /* WebSocketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketManager.h; sourceTree = "<group>"; };
+		210D52EA247AC24700B3A7EA /* WebSocketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketManager.m; sourceTree = "<group>"; };
 		217A173024790EAB005D49A4 /* NumberScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumberScrollView.h; sourceTree = "<group>"; };
 		217A173124790EAB005D49A4 /* NumberScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NumberScrollView.m; sourceTree = "<group>"; };
 		217A173324790EC1005D49A4 /* NumberScrollView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NumberScrollView.xib; sourceTree = "<group>"; };
@@ -209,6 +212,8 @@
 			children = (
 				21B963F724781919008B246B /* AppDelegate.h */,
 				21B963F824781919008B246B /* AppDelegate.m */,
+				210D52E9247AC24700B3A7EA /* WebSocketManager.h */,
+				210D52EA247AC24700B3A7EA /* WebSocketManager.m */,
 				217A174B2479D657005D49A4 /* Common */,
 				217A173F247928D6005D49A4 /* One */,
 				217A1740247928E8005D49A4 /* Second */,
@@ -374,6 +379,7 @@
 				217A17532479D964005D49A4 /* ShowNumberView.m in Sources */,
 				21B963F924781919008B246B /* AppDelegate.m in Sources */,
 				210D5297247A4B6200B3A7EA /* ThirdViewController.m in Sources */,
+				210D52EB247AC24700B3A7EA /* WebSocketManager.m in Sources */,
 				217A17442479D347005D49A4 /* NSArray+ErrorHandle.m in Sources */,
 				21B9640F2478AFF9008B246B /* IpConfigView.m in Sources */,
 				217A173224790EAB005D49A4 /* NumberScrollView.m in Sources */,

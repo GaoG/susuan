@@ -8,4 +8,6 @@ target 'Sum' do
 
   # Pods for Sum
 	pod 'CocoaAsyncSocket'
+	pod 'SocketRocket'
+ 	pod 'AFNetworking','~>3.1.0'
 end
