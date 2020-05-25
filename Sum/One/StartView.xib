@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,18 +16,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_icon" translatesAutoresizingMaskIntoConstraints="NO" id="XzR-y6-2lO">
-                    <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
+                    <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                     <color key="backgroundColor" red="0.34773737389428883" green="0.37759738509390817" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="XzR-y6-2lO" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="2Qn-zR-mWY"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="XzR-y6-2lO" secondAttribute="trailing" id="UgP-uN-898"/>
-                <constraint firstItem="XzR-y6-2lO" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="Ulq-Md-h9v"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="XzR-y6-2lO" secondAttribute="bottom" id="pA4-1L-eBD"/>
+                <constraint firstItem="XzR-y6-2lO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2Qn-zR-mWY"/>
+                <constraint firstAttribute="trailing" secondItem="XzR-y6-2lO" secondAttribute="trailing" id="UgP-uN-898"/>
+                <constraint firstItem="XzR-y6-2lO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Ulq-Md-h9v"/>
+                <constraint firstAttribute="bottom" secondItem="XzR-y6-2lO" secondAttribute="bottom" id="pA4-1L-eBD"/>
             </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="bgImageView" destination="XzR-y6-2lO" id="U1N-Tq-jo4"/>
             </connections>

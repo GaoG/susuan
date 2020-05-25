@@ -21,6 +21,9 @@
 		217A17502479D6BA005D49A4 /* ProgressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 217A174F2479D6BA005D49A4 /* ProgressView.xib */; };
 		217A17532479D964005D49A4 /* ShowNumberView.m in Sources */ = {isa = PBXBuildFile; fileRef = 217A17522479D964005D49A4 /* ShowNumberView.m */; };
 		217A17552479D96D005D49A4 /* ShowNumberView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 217A17542479D96D005D49A4 /* ShowNumberView.xib */; };
+		218A0F12247C1AE9001646A5 /* Documentation.html in Resources */ = {isa = PBXBuildFile; fileRef = 218A0F0D247C1AE9001646A5 /* Documentation.html */; };
+		218A0F13247C1AE9001646A5 /* GCDAsyncUdpSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 218A0F0E247C1AE9001646A5 /* GCDAsyncUdpSocket.m */; };
+		218A0F14247C1AE9001646A5 /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 218A0F0F247C1AE9001646A5 /* GCDAsyncSocket.m */; };
 		21B963F924781919008B246B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 21B963F824781919008B246B /* AppDelegate.m */; };
 		21B963FC24781919008B246B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21B963FB24781919008B246B /* ViewController.m */; };
 		21B963FF24781919008B246B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21B963FD24781919008B246B /* Main.storyboard */; };
@@ -68,6 +71,11 @@
 		217A17512479D964005D49A4 /* ShowNumberView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowNumberView.h; sourceTree = "<group>"; };
 		217A17522479D964005D49A4 /* ShowNumberView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowNumberView.m; sourceTree = "<group>"; };
 		217A17542479D96D005D49A4 /* ShowNumberView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowNumberView.xib; sourceTree = "<group>"; };
+		218A0F0D247C1AE9001646A5 /* Documentation.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = Documentation.html; sourceTree = "<group>"; };
+		218A0F0E247C1AE9001646A5 /* GCDAsyncUdpSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncUdpSocket.m; sourceTree = "<group>"; };
+		218A0F0F247C1AE9001646A5 /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		218A0F10247C1AE9001646A5 /* GCDAsyncUdpSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncUdpSocket.h; sourceTree = "<group>"; };
+		218A0F11247C1AE9001646A5 /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		21B963F424781919008B246B /* Sum.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sum.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21B963F724781919008B246B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		21B963F824781919008B246B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -189,9 +197,22 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		218A0F0C247C1AE9001646A5 /* GCD */ = {
+			isa = PBXGroup;
+			children = (
+				218A0F0D247C1AE9001646A5 /* Documentation.html */,
+				218A0F0E247C1AE9001646A5 /* GCDAsyncUdpSocket.m */,
+				218A0F0F247C1AE9001646A5 /* GCDAsyncSocket.m */,
+				218A0F10247C1AE9001646A5 /* GCDAsyncUdpSocket.h */,
+				218A0F11247C1AE9001646A5 /* GCDAsyncSocket.h */,
+			);
+			path = GCD;
+			sourceTree = "<group>";
+		};
 		21B963EB24781919008B246B = {
 			isa = PBXGroup;
 			children = (
+				218A0F0C247C1AE9001646A5 /* GCD */,
 				21B963F624781919008B246B /* Sum */,
 				21B963F524781919008B246B /* Products */,
 				EE960B5ED7E5FE655CF7CF5B /* Pods */,
@@ -312,6 +333,7 @@
 				21B964112478B082008B246B /* IpConfigView.xib in Resources */,
 				217A17552479D96D005D49A4 /* ShowNumberView.xib in Resources */,
 				21B964162478B9A0008B246B /* CountDownView.xib in Resources */,
+				218A0F12247C1AE9001646A5 /* Documentation.html in Resources */,
 				21B964252478C79E008B246B /* SubmitView.xib in Resources */,
 				217A17502479D6BA005D49A4 /* ProgressView.xib in Resources */,
 				217A173424790EC1005D49A4 /* NumberScrollView.xib in Resources */,
@@ -372,6 +394,7 @@
 				21B963FC24781919008B246B /* ViewController.m in Sources */,
 				217A173E247928CE005D49A4 /* SecondViewController.m in Sources */,
 				217A1737247910DC005D49A4 /* UILabel+WordSpacing.m in Sources */,
+				218A0F13247C1AE9001646A5 /* GCDAsyncUdpSocket.m in Sources */,
 				21B9641E2478C4AA008B246B /* TipsView.m in Sources */,
 				21B964192478BF2A008B246B /* StartView.m in Sources */,
 				217A174E2479D6AB005D49A4 /* ProgressView.m in Sources */,
@@ -387,6 +410,7 @@
 				21B964232478C790008B246B /* SubmitView.m in Sources */,
 				217A173A2479166F005D49A4 /* UIView+Category.m in Sources */,
 				21B964142478B996008B246B /* CountDownView.m in Sources */,
+				218A0F14247C1AE9001646A5 /* GCDAsyncSocket.m in Sources */,
 				217A174A2479D435005D49A4 /* NSObject+SwizzleMethod.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -90,12 +90,12 @@
 
 
 /// 开始滚动  设置时间
-- (void)scrollWithSpace:(NSInteger)space {
+- (void)scrollWithSpace:(float)space {
     
     [_gcdTimer invalidate];
     
     @weakify(self)
-    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:1 block:^{
+    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:space block:^{
         @strongify(self)
         [self updateUI];
     }];

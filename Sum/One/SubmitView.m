@@ -50,7 +50,15 @@
     self.submitBut.enabled = YES;
     self.startCountDate = [NSDate date];
     
-        [self.gcdTimer fire];
+    [_gcdTimer invalidate];
+    __weak id weakSelf = self;
+    self.date1970 = [NSDate dateWithTimeIntervalSince1970:0];
+    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:0.01 block:^{
+        [weakSelf updateTime];
+    }];
+    
+    
+    [self.gcdTimer fire];
   
 }
 
@@ -65,7 +73,7 @@
     
     
     NSString *strDate = [self.dateFormatter stringFromDate:timeToShow];
-    NSLog(@"%@ ===",strDate);
+//    NSLog(@"%@ ===",strDate);
     
     _chronographL.text = strDate;
     
@@ -86,23 +94,24 @@
     sender.enabled = NO;
     
      [self.gcdTimer invalidate];
+    self.submitBlock ? self.submitBlock() : nil;
 }
 
 
 
 
--(SNTimer *)gcdTimer {
-    
-    if(!_gcdTimer){
-        __weak id weakSelf = self;
-        self.date1970 = [NSDate dateWithTimeIntervalSince1970:0];
-        _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:0.001 block:^{
-            [weakSelf updateTime];
-        }];
-        
-    }
-    return _gcdTimer;
-}
+//-(SNTimer *)gcdTimer {
+//
+//    if(!_gcdTimer){
+//        __weak id weakSelf = self;
+//        self.date1970 = [NSDate dateWithTimeIntervalSince1970:0];
+//        _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:0.01 block:^{
+//            [weakSelf updateTime];
+//        }];
+//
+//    }
+//    return _gcdTimer;
+//}
 
 
 - (NSDateFormatter *)dateFormatter {

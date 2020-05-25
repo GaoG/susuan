@@ -14,12 +14,16 @@
 #import "NumberScrollView.h"
 #import "ConfigHeader.h"
 #import "ProgressView.h"
-
+#import "TipsView.h"
 #import "SecondViewController.h"
 #import "WebSocketManager.h"
 
+#import "GCDAsyncUdpSocket.h"
 
-@interface ViewController ()<WebSocketManagerDelegate>
+
+#define SERVERPORT 9600
+
+@interface ViewController ()<WebSocketManagerDelegate,GCDAsyncUdpSocketDelegate>
 @property (nonatomic, strong)UIView *scrollview;
 
 @property (nonatomic, strong)IpConfigView *configView;
@@ -30,6 +34,9 @@
 
 @property (nonatomic, strong)SubmitView *submitView;
 
+@property (nonatomic, strong)TipsView *tipsView;
+
+
 @property (nonatomic, strong)NumberScrollView *numberScrollView;
 
 @property (nonatomic, strong)ProgressView *progressView;
@@ -38,19 +45,20 @@
 
 @property (nonatomic, strong)WebSocketManager *webSocketManager;
 
+@property (nonatomic, strong) NSData *address;
+
 
 @end
 
-@implementation ViewController
+@implementation ViewController{
+    GCDAsyncUdpSocket *receiveSocket;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-//        [self performSelector:@selector(ceshi) withObject:nil afterDelay:0];
-//
-//
-//    return;
-
+    
+    [self initSocket];
     
     self.progressView.frame = self.view.bounds;
     [self.view addSubview:self.progressView];
@@ -65,7 +73,6 @@
     self.countDownView.frame = self.view.bounds;
     [self.view addSubview:self.countDownView];
     
-    [self.countDownView countDownBegin:6];
     
     self.startView.frame = self.view.bounds;
     [self.view addSubview:self.startView];
@@ -80,6 +87,11 @@
     
     self.numberScrollView.frame = self.view.bounds;
     [self.view addSubview:self.numberScrollView];
+    
+    self.tipsView.frame = self.view.bounds;
+    [self.view addSubview:self.tipsView];
+    
+    
 
 //    NSMutableArray *arr = [NSMutableArray array];
 //
@@ -95,7 +107,7 @@
 //    self.numberScrollView.dataArr = arr;
     
     
-    [self.viewArr addObjectsFromArray:@[self.configView,self.configView,self.countDownView,self.startView,self.submitView,self.numberScrollView,self.progressView]];
+    [self.viewArr addObjectsFromArray:@[self.configView,self.configView,self.countDownView,self.startView,self.submitView,self.numberScrollView,self.progressView,self.tipsView]];
     
     
     [self operateView:self.configView withState:NO];
@@ -104,7 +116,50 @@
 
 
 
+- (void)initSocket {
+    
+    self.title = @"服务器";
+    dispatch_queue_t dQueue = dispatch_queue_create("Server queue", NULL);
+    receiveSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self
+                                                  delegateQueue:dQueue];
+    NSError *error;
+    [receiveSocket bindToPort:SERVERPORT error:&error];
+    if (error) {
+        NSLog(@"服务器绑定失败");
+    }
+    [receiveSocket beginReceiving:nil];
+}
 
+
+- (void)udpSocket:(GCDAsyncUdpSocket *)sock didReceiveData:(NSData *)data fromAddress:(NSData *)address withFilterContext:(id)filterContext {
+    
+    NSString *msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    /**
+     *  更新UI一定要到主线程去操作啊
+     */
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        
+    });
+    self.address = address;
+    
+//    NSString *sendStr = @"连接成功";
+
+    [self sendGroupMessage:msg];
+}
+
+
+
+/// 像组中发送消息
+-(void)sendGroupMessage:(NSString *)message {
+    
+    NSData *sendData = [message dataUsingEncoding:NSUTF8StringEncoding];
+    [receiveSocket sendData:sendData toHost:[GCDAsyncUdpSocket hostFromAddress:self.address]
+                       port:[GCDAsyncUdpSocket portFromAddress:self.address]
+                withTimeout:60
+                        tag:500];
+    
+    
+}
 
 
 -(void)ceshi:(BOOL)state withView:(UIView *)view {
@@ -135,27 +190,67 @@
     }else{
         
         NSDictionary *result = [self dictionaryWithJsonString:string];
+        NSDictionary *dataDic = result[@"data"];
+        /// ProgramStart logo页 RollQuestion // 321 倒计时 数字滚动页
+        // StartAnswer 开始提示页面
+        NSString *stepName = dataDic[@"stepName"];
         
         
         if ([result [@"messageType"]intValue ] == 255) {
             /// 登陆成功
           UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:string delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [al show];
-        } else if ([result [@"messageType"]intValue ] == 16){
+        } else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"ProgramStart"]){
             /// 首页
             [self operateView:self.startView withState:NO];
    
         }else if ([result [@"messageType"]intValue ] == 33){
-            [self.webSocketManager sendDataToServerWithMessageType:@"255" data:@{@"code":@"16",@"message":@""}];
+            [self.webSocketManager sendDataToServerWithMessageType:@"255" data:@{@"code":@(16),@"message":@"block"}];
             
             /// 数字滚动
             NSDictionary *dataDic = result[@"data"];
             
             dataDic ? [self setRecollNumber:dataDic] :nil;
             
+
             
             
+        }else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"StartAnswer"] ){
+            // 开始页面tips
             
+//            [self operateView:self.countDownView withState:NO];
+//                        [self.countDownView countDownBegin:3];
+            [self.webSocketManager sendDataToServerWithMessageType:@"255" data:@{@"code":@(16),@"message":@"scrollStart"}];
+            [self operateView: self.tipsView withState:NO];
+            self.tipsView.tipsLabel.titleLabel.text =@"开始";
+        }else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"RollQuestion"] ){
+            /// 开始倒计时  倒计时结束到 数字滚动页面
+                    [self operateView:self.countDownView withState:NO];
+                    [self.countDownView countDownBegin:3];
+            
+        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"晋级成功"] ){
+            /// 回到logo页面 晋级成功
+            [self.tipsView.tipsLabel setTitle:@"晋级成功" forState:UIControlStateNormal];
+            [self operateView: self.tipsView withState:NO];
+            
+            
+            [self sendGroupMessage:@"20"];
+            
+            
+        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"晋级失败"] ){
+            /// 回到logo页面 晋级失败
+            [self.tipsView.tipsLabel setTitle:@"晋级失败" forState:UIControlStateNormal];
+            [self operateView: self.tipsView withState:NO];
+            
+            
+            [self sendGroupMessage:@"30"];
+            
+        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"回答错误"] ){
+            [self.tipsView.tipsLabel setTitle:@"回答错误" forState:UIControlStateNormal];
+            /// 回到logo页面 晋级失败
+            [self operateView: self.tipsView withState:NO];
+            
+                
         }
         
         
@@ -187,9 +282,9 @@
     
     self.numberScrollView.dataArr = dataStringArr;
     
-    [self operateView:self.numberScrollView withState:NO];
-    
-    [self.numberScrollView scrollWithSpace:1];
+//    [self operateView:self.numberScrollView withState:NO];
+//
+//    [self.numberScrollView scrollWithSpace:1];
     
 }
 
@@ -222,9 +317,9 @@
             @strongify(self)
             
             if( type == 1){
-            [self.webSocketManager testConnectServerWithIp:@"192.168.1.4" withdeviceID:@"111111"];
+            [self.webSocketManager testConnectServerWithIp:mainIP withdeviceID:ID];
             }else if (type ==2){
-                NSDictionary * data = @{@"deviceId":[NSString stringWithFormat:@"%@",@"111111"],@"deviceInfo":@"numberOne"};
+                NSDictionary * data = @{@"deviceId":[NSString stringWithFormat:@"%@",ID],@"deviceInfo":ID };
                 [self.webSocketManager sendDataToServerWithMessageType:@"0" data:data];
             }
         };
@@ -240,9 +335,12 @@
     
     if (!_countDownView) {
         _countDownView = [[[NSBundle mainBundle]loadNibNamed:@"CountDownView" owner:nil options:nil]lastObject];
-        
+        @weakify(self)
         _countDownView.endBlock = ^{
+          @strongify(self)
+            [self operateView:self.numberScrollView withState:NO];
             
+            [self.numberScrollView scrollWithSpace:1.5];
         };
         
     }
@@ -269,7 +367,12 @@
     
     if (!_submitView) {
         _submitView = [[[NSBundle mainBundle]loadNibNamed:@"SubmitView" owner:nil options:nil]lastObject];
-        
+        @weakify(self)
+        _submitView.submitBlock = ^{
+            @strongify(self)
+            [self sendGroupMessage:@"10"];
+            
+        };
     }
     
     
@@ -320,6 +423,19 @@
     
     return _webSocketManager;
 }
+
+-(TipsView *)tipsView {
+    
+    if (!_tipsView) {
+        _tipsView = [[[NSBundle mainBundle]loadNibNamed:@"TipsView" owner:nil options:nil]lastObject];
+        
+    }
+    
+    return _tipsView;
+}
+
+
+
 
 //// 字符串转字典
 -(NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString

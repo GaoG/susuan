@@ -56,7 +56,7 @@
     dispatch_source_set_event_handler(timer, ^{
         //回调主线程，在主线程中操作UI
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (second > 0) {
+            if (second > 1) {
 //                weakSelf.timeLabel.text = [NSString stringWithFormat:@"%ld",(long)second];
                 second --;
                 self.countdownImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"countdown_%ld",(long)second]];

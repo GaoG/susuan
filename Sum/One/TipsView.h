@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TipsView : UIView
 
+@property (weak, nonatomic) IBOutlet UIButton *tipsLabel;
+
 @end
 
 NS_ASSUME_NONNULL_END

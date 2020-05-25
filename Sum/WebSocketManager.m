@@ -284,12 +284,10 @@ NSString * const IPDIZHI = @"http://192.168.1.4:14500/gdqh";
 
 -(void)sendDataToServerWithMessageType:(NSString *)messageType data:(NSDictionary *)data{
     
-    
-    
-    
     NSString * dataString = [self convertToJsonData:data];
-    NSDictionary * messageDic = @{@"messageType":messageType,@"dataLength":[NSString stringWithFormat:@"%lu",(unsigned long)dataString.length],@"data":dataString};
+    NSDictionary * messageDic = @{@"messageType":@([messageType intValue]) ,@"dataLength":[NSString stringWithFormat:@"%lu",(unsigned long)dataString.length],@"data":dataString};
     [self sendDataToServer:[self convertToJsonData:messageDic]];
+    
 }
 
 //发送数据给服务器

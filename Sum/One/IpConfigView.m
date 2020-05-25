@@ -71,13 +71,13 @@
 -(void)connectAction:(NSInteger)type {
     
 //    id
-    NSString *IDStr = self.deviceID.text ;
+    NSString *IDStr = [self.deviceID.text stringByReplacingOccurrencesOfString:@" " withString:@""] ;
 //    ip
-    NSString *mainIPStr = self.mainIP.text ;
+    NSString *mainIPStr = [self.mainIP.text stringByReplacingOccurrencesOfString:@" " withString:@""];
 //    排行版
-    NSString *listIPStr = self.listIP.text ;
+    NSString *listIPStr = [self.listIP.text stringByReplacingOccurrencesOfString:@" " withString:@""];
 //   观众
-    NSString *audienceIPStr = self.audienceIP.text ;
+    NSString *audienceIPStr = [self.audienceIP.text stringByReplacingOccurrencesOfString:@" " withString:@""];
     
     self.connectBlock ? self.connectBlock(IDStr, mainIPStr, listIPStr, audienceIPStr, type) : nil;
   

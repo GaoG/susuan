@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy)void (^scrollEndBlock) (void);
 
 /// 开始滚动  设置时间
-- (void)scrollWithSpace:(NSInteger)space;
+- (void)scrollWithSpace:(float)space;
 
 
 
