@@ -49,6 +49,7 @@
 		210D5296247A4B6200B3A7EA /* ThirdViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThirdViewController.m; sourceTree = "<group>"; };
 		210D52E9247AC24700B3A7EA /* WebSocketManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSocketManager.h; sourceTree = "<group>"; };
 		210D52EA247AC24700B3A7EA /* WebSocketManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSocketManager.m; sourceTree = "<group>"; };
+		21679894247D214B000AB226 /* Sum.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Sum.entitlements; sourceTree = "<group>"; };
 		217A173024790EAB005D49A4 /* NumberScrollView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NumberScrollView.h; sourceTree = "<group>"; };
 		217A173124790EAB005D49A4 /* NumberScrollView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NumberScrollView.m; sourceTree = "<group>"; };
 		217A173324790EC1005D49A4 /* NumberScrollView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NumberScrollView.xib; sourceTree = "<group>"; };
@@ -231,6 +232,7 @@
 		21B963F624781919008B246B /* Sum */ = {
 			isa = PBXGroup;
 			children = (
+				21679894247D214B000AB226 /* Sum.entitlements */,
 				21B963F724781919008B246B /* AppDelegate.h */,
 				21B963F824781919008B246B /* AppDelegate.m */,
 				210D52E9247AC24700B3A7EA /* WebSocketManager.h */,
@@ -300,6 +302,14 @@
 				TargetAttributes = {
 					21B963F324781919008B246B = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 0;
+							};
+							com.apple.SafariKeychain = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -439,6 +449,7 @@
 /* Begin XCBuildConfiguration section */
 		21B964082478191B008B246B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC86B6A72729D152416BB323 /* Pods-Sum.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -488,7 +499,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -498,6 +509,7 @@
 		};
 		21B964092478191B008B246B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC86B6A72729D152416BB323 /* Pods-Sum.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -541,7 +553,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -554,33 +566,39 @@
 			baseConfigurationReference = EC86B6A72729D152416BB323 /* Pods-Sum.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ATX6SQ3HRM;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 96E5N4445H;
 				INFOPLIST_FILE = Sum/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = text.com.Sum;
+				PRODUCT_BUNDLE_IDENTIFIER = test.com.Sum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = test;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
 		21B9640C2478191B008B246B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D6B98E845535B44AC972FF83 /* Pods-Sum.release.xcconfig */;
+			baseConfigurationReference = EC86B6A72729D152416BB323 /* Pods-Sum.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = ATX6SQ3HRM;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 96E5N4445H;
 				INFOPLIST_FILE = Sum/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = text.com.Sum;
+				PRODUCT_BUNDLE_IDENTIFIER = test.com.Sum;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = adHoc;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;

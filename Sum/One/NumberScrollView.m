@@ -73,9 +73,9 @@
         label.textColor = [UIColor grayColor];
         label.tag = i+1000;
         
-        if (i ==0) {
-            NSString *fristStr =  [_selectedStringArr objectAtIndexVerify:i];
-            [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:[fristStr componentsSeparatedByString:@""] withKeyColor:UIColor.redColor];
+        if (i == 0) {
+//            NSString *fristStr =  [_selectedStringArr objectAtIndexVerify:i];
+            [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:[_selectedStringArr objectAtIndexVerify:i] withKeyColor:UIColor.redColor];
         }
         [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:@[] withKeyColor:UIColor.redColor];
         [self.scrollView addSubview:label];
@@ -90,40 +90,52 @@
 
 
 /// 开始滚动  设置时间
-- (void)scrollWithSpace:(float)space {
-    
+- (void)scrollWithSpace:(float)space andAnmintTime:(float)time;{
     [_gcdTimer invalidate];
-    
+    float tempspace = space/1000 + time/1000 ;
     @weakify(self)
-    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:space block:^{
+    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:tempspace block:^{
         @strongify(self)
-        [self updateUI];
+        [self updateUI:time];
     }];
     self.currentIndex = 0;
-    [_gcdTimer fire];
     
+    
+    UILabel *label = [self.scrollView viewWithTag:_currentIndex+1000];
+    [label setText:[_dataArr objectAtIndexVerify:_currentIndex] withKeyWord:[self.selectedStringArr objectAtIndexVerify:_currentIndex] withKeyColor:UIColor.redColor];
+    
+    [_gcdTimer fire];
     
 }
 
--(void)updateUI{
+
+-(void)updateUI:(float)time{
     
     _currentIndex ++;
     
 //    float typeY = self.scrollView.y;
 //    typeY-
-    self.scrollView.y -= 70;
     
+    float tempTime = time/1000;
+//    [UIView animateWithDuration:tempTime animations:^{
     
-    UILabel *oldLabel = [self.scrollView viewWithTag:_currentIndex-1+1000];
+       self.scrollView.y -= 70;
+//    }];
     
-    [oldLabel setText:[_dataArr objectAtIndexVerify:_currentIndex-1] withKeyWord:@[] withKeyColor:UIColor.redColor];
+    if (_currentIndex >1) {
+        
+        UILabel *oldLabel = [self.scrollView viewWithTag:_currentIndex-1+1000];
+        [oldLabel setText:[_dataArr objectAtIndexVerify:_currentIndex-1] withKeyWord:@[] withKeyColor:UIColor.redColor];
+    }
+   
+    
     
     
    UILabel *label = [self.scrollView viewWithTag:_currentIndex+1000];
     
-    NSString *selectStr =  [self.selectedStringArr objectAtIndexVerify:_currentIndex];
+//    NSString *selectStr =  [self.selectedStringArr objectAtIndexVerify:_currentIndex];
     
-     [label setText:[_dataArr objectAtIndexVerify:_currentIndex] withKeyWord:[selectStr componentsSeparatedByString:@""] withKeyColor:UIColor.redColor];
+     [label setText:[_dataArr objectAtIndexVerify:_currentIndex] withKeyWord:[self.selectedStringArr objectAtIndexVerify:_currentIndex] withKeyColor:UIColor.redColor];
     
     if(_currentIndex == self.dataArr.count ){
         [_gcdTimer invalidate];

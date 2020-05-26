@@ -25,9 +25,9 @@
     NSMutableAttributedString * attributedString =     [[NSMutableAttributedString alloc] initWithString:text attributes:dic];
     
     for (NSString *str in keywords) {
-        if ([text rangeOfString:str].location!=NSNotFound) {
-            [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:[text rangeOfString:str]];
-        }
+//        if ([text rangeOfString:str].location!=NSNotFound) {
+            [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange([str integerValue], 1)];
+//        }
     }
     
     [self setAttributedText:attributedString];

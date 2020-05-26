@@ -47,6 +47,12 @@
 
 @property (nonatomic, strong) NSData *address;
 
+@property (nonatomic, assign) float space;
+
+@property (nonatomic, assign) float time;
+
+
+@property (nonatomic, assign) BOOL isFail;
 
 @end
 
@@ -118,7 +124,7 @@
 
 - (void)initSocket {
     
-    self.title = @"服务器";
+    
     dispatch_queue_t dQueue = dispatch_queue_create("Server queue", NULL);
     receiveSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self
                                                   delegateQueue:dQueue];
@@ -200,6 +206,8 @@
             /// 登陆成功
           UIAlertView *al = [[UIAlertView alloc]initWithTitle:@"提示" message:string delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [al show];
+            [self operateView:self.startView withState:NO];
+            
         } else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"ProgramStart"]){
             /// 首页
             [self operateView:self.startView withState:NO];
@@ -207,8 +215,15 @@
         }else if ([result [@"messageType"]intValue ] == 33){
             [self.webSocketManager sendDataToServerWithMessageType:@"255" data:@{@"code":@(16),@"message":@"block"}];
             
+            
+            if (self.isFail) {
+                return;
+            }
+            
             /// 数字滚动
             NSDictionary *dataDic = result[@"data"];
+            self.time = [dataDic[@"rollTimeSpan"] floatValue];
+            self.space = [dataDic[@"waitTimeSpan"] floatValue];
             
             dataDic ? [self setRecollNumber:dataDic] :nil;
             
@@ -241,7 +256,7 @@
             /// 回到logo页面 晋级失败
             [self.tipsView.tipsLabel setTitle:@"晋级失败" forState:UIControlStateNormal];
             [self operateView: self.tipsView withState:NO];
-            
+            self.isFail = YES;
             
             [self sendGroupMessage:@"30"];
             
@@ -250,6 +265,7 @@
             /// 回到logo页面 晋级失败
             [self operateView: self.tipsView withState:NO];
             
+            self.isFail = YES;
                 
         }
         
@@ -275,7 +291,7 @@
     NSMutableArray *selectStringArr = [NSMutableArray arrayWithCapacity:0];
     
     for (NSDictionary *dic in items) {
-        [selectStringArr addObject:dic[@"SelectedItemString"]];
+        [selectStringArr addObject:dic[@"SelectedItemIndex"]];
         [dataStringArr addObject:dic[@"DataString"]];
     }
     self.numberScrollView.selectedStringArr = selectStringArr;
@@ -313,11 +329,13 @@
         _configView = [[[NSBundle mainBundle]loadNibNamed:@"IpConfigView" owner:nil options:nil]lastObject];
         
         @weakify(self)
-        _configView.connectBlock = ^(NSString * _Nonnull mainIP, NSString * _Nonnull ID, NSString * _Nonnull listIP, NSString * _Nonnull audienceIP, NSInteger type) {
+        _configView.connectBlock = ^(NSString *ID,NSString *mainIP,NSString *listIP,NSString *audienceIP, NSInteger type) {
             @strongify(self)
             
             if( type == 1){
+                
             [self.webSocketManager testConnectServerWithIp:mainIP withdeviceID:ID];
+                
             }else if (type ==2){
                 NSDictionary * data = @{@"deviceId":[NSString stringWithFormat:@"%@",ID],@"deviceInfo":ID };
                 [self.webSocketManager sendDataToServerWithMessageType:@"0" data:data];
@@ -340,7 +358,7 @@
           @strongify(self)
             [self operateView:self.numberScrollView withState:NO];
             
-            [self.numberScrollView scrollWithSpace:1.5];
+            [self.numberScrollView scrollWithSpace:self.space andAnmintTime:self.time];
         };
         
     }

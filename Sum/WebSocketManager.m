@@ -20,7 +20,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 // 只需要替换  192.168.1.3 这个IP为自己电脑的ip就ok了
 //NSString * const IPDIZHI = @"http://192.168.1.3:14500/gdqh";
 
-NSString * const IPDIZHI = @"http://192.168.1.4:14500/gdqh";
+//NSString * const IPDIZHI = @"http://192.168.1.4:14500/gdqh";
 
 @interface WebSocketManager ()<SRWebSocketDelegate>
 
@@ -60,7 +60,7 @@ NSString * const IPDIZHI = @"http://192.168.1.4:14500/gdqh";
         return;
     }
     
-    self.webScoket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:IPDIZHI]];
+//    self.webScoket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:IPDIZHI]];
     self.webScoket.delegate = self;
     [self.webScoket open];
 }
@@ -73,7 +73,9 @@ NSString * const IPDIZHI = @"http://192.168.1.4:14500/gdqh";
 {
     
     if(self.webScoket){
-        return;
+        [self.webScoket close];
+        self.webScoket = nil;
+        
     }
     self.webScoket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@:14500/gdqh",ip]]];
     self.webScoket.delegate = self;
