@@ -48,11 +48,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Sum/One/ViewController.m"
-            timestampString = "612189801.209695"
+            timestampString = "612337769.458248"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "149"
-            endingLineNumber = "149"
+            startingLineNumber = "143"
+            endingLineNumber = "143"
             landmarkName = "-udpSocket:didReceiveData:fromAddress:withFilterContext:"
             landmarkType = "7">
          </BreakpointContent>
@@ -64,11 +64,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Sum/One/ViewController.m"
-            timestampString = "612189801.209754"
+            timestampString = "612337769.458967"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
             landmarkName = "-udpSocket:didReceiveData:fromAddress:withFilterContext:"
             landmarkType = "7">
          </BreakpointContent>
@@ -128,6 +128,22 @@
             startingLineNumber = "134"
             endingLineNumber = "134"
             landmarkName = "-updateUI:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Sum/WebSocketManager.m"
+            timestampString = "612337769.4596961"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "293"
+            endingLineNumber = "293"
+            landmarkName = "-sendDataToServerWithMessageType:data:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

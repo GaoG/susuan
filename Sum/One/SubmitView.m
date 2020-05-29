@@ -39,6 +39,9 @@
 
 @property (nonatomic,strong) NSDateFormatter *dateFormatter;
 
+@property (nonatomic,strong) NSDateFormatter *dateFormatterSSSS;
+@property (nonatomic, assign) int time;
+
 @end
 
 @implementation SubmitView
@@ -53,11 +56,12 @@
     [_gcdTimer invalidate];
     __weak id weakSelf = self;
     self.date1970 = [NSDate dateWithTimeIntervalSince1970:0];
-    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:0.01 block:^{
+    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:0.001 block:^{
         [weakSelf updateTime];
+        
     }];
     
-    
+    self.time = 0;
     [self.gcdTimer fire];
   
 }
@@ -65,7 +69,7 @@
 
 
 -(void)updateTime {
-    
+    self.time++;
     NSTimeInterval timeDieff = [[[NSDate alloc]init]timeIntervalSinceDate:self.startCountDate];
     NSDate * timeToShow = [NSDate date];
     
@@ -94,7 +98,13 @@
     sender.enabled = NO;
     
      [self.gcdTimer invalidate];
-    self.submitBlock ? self.submitBlock() : nil;
+    
+    
+    NSTimeInterval timeDieff = [[[NSDate alloc]init]timeIntervalSinceDate:self.startCountDate];
+  
+    self.time =  timeDieff *1000;
+    
+    self.submitBlock ? self.submitBlock(self.time) : nil;
 }
 
 
@@ -112,6 +122,17 @@
 //    }
 //    return _gcdTimer;
 //}
+- (NSDateFormatter *)dateFormatterSSSS {
+    if(!_dateFormatterSSSS){
+        
+        _dateFormatterSSSS = [[NSDateFormatter alloc] init];
+        [_dateFormatterSSSS setDateFormat:@"SSS"];
+        [_dateFormatterSSSS setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
+        
+    }
+    
+    return _dateFormatterSSSS;
+}
 
 
 - (NSDateFormatter *)dateFormatter {
@@ -125,6 +146,7 @@
     
     return _dateFormatter;
 }
+
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

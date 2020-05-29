@@ -17,13 +17,13 @@
 #import "TipsView.h"
 #import "SecondViewController.h"
 #import "WebSocketManager.h"
-
+#import "WebSocketManagerA.h"
 #import "GCDAsyncUdpSocket.h"
 
 
 #define SERVERPORT 9600
 
-@interface ViewController ()<WebSocketManagerDelegate,GCDAsyncUdpSocketDelegate>
+@interface ViewController ()<WebSocketManagerDelegate,GCDAsyncUdpSocketDelegate,WebSocketManagerDelegateA>
 @property (nonatomic, strong)UIView *scrollview;
 
 @property (nonatomic, strong)IpConfigView *configView;
@@ -45,11 +45,17 @@
 
 @property (nonatomic, strong)WebSocketManager *webSocketManager;
 
+@property (nonatomic, strong)WebSocketManagerA *webSocketManagerA;
+
 @property (nonatomic, strong) NSData *address;
 
 @property (nonatomic, assign) float space;
 
 @property (nonatomic, assign) float time;
+
+@property (nonatomic, copy) NSString * listIP;
+
+@property (nonatomic, copy) NSString * myID;
 
 
 @property (nonatomic, assign) BOOL isFail;
@@ -99,19 +105,7 @@
     
     
 
-//    NSMutableArray *arr = [NSMutableArray array];
-//
-//    for (int i= 0; i<20; i++) {
-//        int a = arc4random() % 10000000000000;
-//
-//        NSString *str = [NSString stringWithFormat:@"%010d", a];
-//
-////        NSString * text = [NSString stringWithFormat:@"%u",arc4random()];
-//        [arr addObject:str];
-//    }
-//
-//    self.numberScrollView.dataArr = arr;
-    
+ 
     
     [self.viewArr addObjectsFromArray:@[self.configView,self.configView,self.countDownView,self.startView,self.submitView,self.numberScrollView,self.progressView,self.tipsView]];
     
@@ -181,6 +175,17 @@
     
     
 }
+
+
+#pragma 排行榜消息
+-(void)webSocketDidReceiveMessageA:(NSString *)string;{
+    
+    
+    
+    
+}
+
+
 
 
 
@@ -333,10 +338,19 @@
             @strongify(self)
             
             if( type == 1){
-                
+                self.listIP = listIP;
+                self.myID = ID;
             [self.webSocketManager testConnectServerWithIp:mainIP withdeviceID:ID];
                 
+                
+                [self.webSocketManagerA testConnectServerWithIp:listIP withdeviceID:ID];
+                
+                
             }else if (type ==2){
+                
+                self.listIP = listIP;
+                self.myID = ID;
+                
                 NSDictionary * data = @{@"deviceId":[NSString stringWithFormat:@"%@",ID],@"deviceInfo":ID };
                 [self.webSocketManager sendDataToServerWithMessageType:@"0" data:data];
             }
@@ -386,11 +400,22 @@
     if (!_submitView) {
         _submitView = [[[NSBundle mainBundle]loadNibNamed:@"SubmitView" owner:nil options:nil]lastObject];
         @weakify(self)
-        _submitView.submitBlock = ^{
+        _submitView.submitBlock = ^(int time) {
             @strongify(self)
             [self sendGroupMessage:@"10"];
+
+            time = time <=0 ? 1:time;
             
+            NSDictionary *data = @{
+                                   @"id":@(100),
+                                   @"number":[NSNumber numberWithInteger:[self.myID integerValue]],
+                                   @"useTime":@(time),
+                                   @"projectID":@(1)
+                                   };
+
+            [self.webSocketManagerA sendDataToServerWithMessageType:@"0" data:data];
         };
+
     }
     
     
@@ -441,6 +466,17 @@
     
     return _webSocketManager;
 }
+
+-(WebSocketManagerA *)webSocketManagerA {
+    
+    if (!_webSocketManagerA) {
+        _webSocketManagerA = [WebSocketManagerA shared];
+        _webSocketManagerA.delegate = self;
+    }
+    
+    return _webSocketManagerA;
+}
+
 
 -(TipsView *)tipsView {
     
