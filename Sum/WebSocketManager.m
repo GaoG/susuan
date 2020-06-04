@@ -81,7 +81,6 @@ dispatch_async(dispatch_get_main_queue(), block);\
         
     }
     self.webScoket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@:14500/gdqh",ip]]];
-//    self.webScoket = [[SRWebSocket alloc] initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://%@:4000",ip]]];
     self.webScoket.delegate = self;
     [self.webScoket open];
     

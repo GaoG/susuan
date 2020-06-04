@@ -28,6 +28,8 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *msecR;
 
+@property (weak, nonatomic) IBOutlet UILabel *msecS;
+
 /// 提交
 @property (weak, nonatomic) IBOutlet UIButton *submitBut;
 
@@ -40,7 +42,10 @@
 @property (nonatomic,strong) NSDateFormatter *dateFormatter;
 
 @property (nonatomic,strong) NSDateFormatter *dateFormatterSSSS;
+
 @property (nonatomic, assign) int time;
+
+
 
 @end
 
@@ -53,11 +58,18 @@
     self.submitBut.enabled = YES;
     self.startCountDate = [NSDate date];
     
+    
+
+    
     [_gcdTimer invalidate];
     __weak id weakSelf = self;
     self.date1970 = [NSDate dateWithTimeIntervalSince1970:0];
-    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:0.001 block:^{
-        [weakSelf updateTime];
+    _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:0.0001 block:^{
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakSelf updateTime];
+        });
+        
         
     }];
     
@@ -91,6 +103,7 @@
 //    _msecM.text=[strDate substringWithRange:NSMakeRange(4, 1)];
     _msecR.text=[strDate substringWithRange:NSMakeRange(7, 1)];
     
+    _msecS.text=[strDate substringWithRange:NSMakeRange(8, 1)];
 }
 
 - (IBAction)submitButAction:(UIButton*)sender {
@@ -100,15 +113,46 @@
      [self.gcdTimer invalidate];
     
     
-    NSTimeInterval timeDieff = [[[NSDate alloc]init]timeIntervalSinceDate:self.startCountDate];
-  
-    self.time =  timeDieff *1000;
+    [self performSelector:@selector(delayAction) withObject:nil afterDelay:0.0005];
     
-    self.submitBlock ? self.submitBlock(self.time) : nil;
+    
+//    NSTimeInterval timeDieff = [[[NSDate alloc]init]timeIntervalSinceDate:self.startCountDate];
+  
+  
 }
 
 
-
+-(void)delayAction {
+    
+    NSTimeInterval timeDieff = [[[NSDate alloc]init]timeIntervalSinceDate:self.startCountDate];
+    NSDate * timeToShow = [NSDate date];
+    
+    timeToShow = [self.date1970 dateByAddingTimeInterval:timeDieff];
+    
+    
+    NSString *strDate = [self.dateFormatter stringFromDate:timeToShow];
+    //    NSLog(@"%@ ===",strDate);
+    
+    _chronographL.text = strDate;
+    
+    _minuteL.text=[strDate substringWithRange:NSMakeRange(0, 1)];
+    _minuteR.text=[strDate substringWithRange:NSMakeRange(1, 1)];
+    
+    _secondL.text=[strDate substringWithRange:NSMakeRange(3, 1)];
+    _secondR.text=[strDate substringWithRange:NSMakeRange(4, 1)];
+    
+    _msecL.text=[strDate substringWithRange:NSMakeRange(6, 1)];
+    //    _msecM.text=[strDate substringWithRange:NSMakeRange(4, 1)];
+    _msecR.text=[strDate substringWithRange:NSMakeRange(7, 1)];
+    
+    _msecS.text=[strDate substringWithRange:NSMakeRange(8, 1)];
+    
+    
+    NSInteger tempTime =  [_minuteL.text integerValue] *60*10*1000 + [_minuteR.text integerValue] *60*1000 + [_secondL.text integerValue] *10 *1000 +  [_secondR.text integerValue]  *1000 +[_msecL.text integerValue] *100 + [_msecR.text integerValue] *10 +   [_msecS.text integerValue];
+    
+    self.submitBlock ? self.submitBlock(tempTime) : nil;
+    
+}
 
 //-(SNTimer *)gcdTimer {
 //
@@ -139,7 +183,7 @@
     if(!_dateFormatter){
         
         _dateFormatter = [[NSDateFormatter alloc] init];
-        [_dateFormatter setDateFormat:@"mm:ss:SS"];
+        [_dateFormatter setDateFormat:@"mm:ss:SSS"];
         [_dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"GMT"]];
         
     }

@@ -31,6 +31,7 @@
 
 @property (nonatomic, assign)NSInteger currentIndex;
 
+#define labelHieght  100.0
 
 @end
 
@@ -45,6 +46,13 @@
 }
 */
 
+-(void)awakeFromNib {
+    [super awakeFromNib];
+    
+    self.startLocation.layer.borderColor = UIColor.whiteColor.CGColor;
+    self.startLocation.layer.borderWidth = 1.0f;
+    
+}
 
 -(void)setSelectedStringArr:(NSMutableArray *)selectedStringArr {
     
@@ -60,7 +68,7 @@
     
     
     
-    self.scrollView.frame = CGRectMake(0,self.bgView.height/2-35, SCREEN_WIDTH-200, dataArr.count*70);
+    self.scrollView.frame = CGRectMake(0,self.bgView.height/2-(labelHieght/2), SCREEN_WIDTH-200, dataArr.count*labelHieght);
     
     
 //    self.scrollView.backgroundColor = UIColor.redColor;
@@ -69,20 +77,23 @@
     self.labelArr = [NSMutableArray arrayWithCapacity:_dataArr.count];
     
     for (int i = 0; i<_dataArr.count; i++) {
-        UILabel  *label = [[UILabel alloc]initWithFrame:CGRectMake(0, i*70, self.scrollView.width, 70)];
+        UILabel  *label = [[UILabel alloc]initWithFrame:CGRectMake(0, i*labelHieght, self.scrollView.width, labelHieght)];
         label.textColor = [UIColor grayColor];
         label.tag = i+1000;
         
         if (i == 0) {
-//            NSString *fristStr =  [_selectedStringArr objectAtIndexVerify:i];
             [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:[_selectedStringArr objectAtIndexVerify:i] withKeyColor:UIColor.redColor];
+
+        }else {
+           [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:@[] withKeyColor:UIColor.redColor];
         }
-        [label setText:[_dataArr objectAtIndexVerify:i] withKeyWord:@[] withKeyColor:UIColor.redColor];
+        
         [self.scrollView addSubview:label];
     }
     
     self.bgView.clipsToBounds = YES;
-    [self.bgView addSubview:self.scrollView];
+    [self.bgView insertSubview:self.scrollView atIndex:0];
+//    [self.bgView addSubview:self.scrollView];
 
  
     
@@ -96,7 +107,10 @@
     @weakify(self)
     _gcdTimer = [SNTimer repeatingTimerWithTimeInterval:tempspace block:^{
         @strongify(self)
-        [self updateUI:time];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self updateUI:time];
+        });
+        
     }];
     self.currentIndex = 0;
     
@@ -119,23 +133,37 @@
     float tempTime = time/1000;
 //    [UIView animateWithDuration:tempTime animations:^{
     
-       self.scrollView.y -= 70;
+//       self.scrollView.y -= labelHieght;
 //    }];
     
-    if (_currentIndex >1) {
+    if (self->_currentIndex >0) {
         
-        UILabel *oldLabel = [self.scrollView viewWithTag:_currentIndex-1+1000];
-        [oldLabel setText:[_dataArr objectAtIndexVerify:_currentIndex-1] withKeyWord:@[] withKeyColor:UIColor.redColor];
+        UILabel *oldLabel = [self.scrollView viewWithTag:self->_currentIndex-1+1000];
+        [oldLabel setText:[self->_dataArr objectAtIndexVerify:_currentIndex-1] withKeyWord:@[] withKeyColor:UIColor.redColor];
     }
-   
     
     
+    [UIView animateWithDuration:tempTime animations:^{
+      self.scrollView.y -= labelHieght;
+    } completion:^(BOOL finished) {
+//        if (self->_currentIndex >0) {
+//
+//            UILabel *oldLabel = [self.scrollView viewWithTag:self->_currentIndex-1+1000];
+//            [oldLabel setText:[self->_dataArr objectAtIndexVerify:_currentIndex-1] withKeyWord:@[] withKeyColor:UIColor.redColor];
+//        }
+        
+        
+        
+        
+        UILabel *label = [self.scrollView viewWithTag:self->_currentIndex+1000];
+        
+        //    NSString *selectStr =  [self.selectedStringArr objectAtIndexVerify:_currentIndex];
+        
+        [label setText:[self->_dataArr objectAtIndexVerify:self->_currentIndex] withKeyWord:[self.selectedStringArr objectAtIndexVerify:self->_currentIndex] withKeyColor:UIColor.redColor];
+    }];
     
-   UILabel *label = [self.scrollView viewWithTag:_currentIndex+1000];
     
-//    NSString *selectStr =  [self.selectedStringArr objectAtIndexVerify:_currentIndex];
-    
-     [label setText:[_dataArr objectAtIndexVerify:_currentIndex] withKeyWord:[self.selectedStringArr objectAtIndexVerify:_currentIndex] withKeyColor:UIColor.redColor];
+
     
     if(_currentIndex == self.dataArr.count ){
         [_gcdTimer invalidate];
@@ -146,19 +174,6 @@
     
 }
 
--(void)ceshi:(BOOL)state withView:(UIView *)view {
-    
-    CABasicAnimation *theAnimation;
-    theAnimation=[CABasicAnimation animationWithKeyPath:@"transform.rotation.y"];
-    theAnimation.fillMode = kCAFillModeForwards;
-    theAnimation.duration=.0001;
-    theAnimation.removedOnCompletion = NO;
-    theAnimation.fromValue = [NSNumber numberWithFloat:0];
-    theAnimation.toValue = [NSNumber numberWithFloat: state ? 3.1415926 : 0.0];
-    [view.layer addAnimation:theAnimation forKey:@"animateTransform"];
-    
-    
-}
 
 
 

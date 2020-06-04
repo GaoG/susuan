@@ -181,8 +181,6 @@
 -(void)webSocketDidReceiveMessageA:(NSString *)string;{
     
     
-    
-    
 }
 
 
@@ -195,15 +193,25 @@
 
 - (void)webSocketDidReceiveMessage:(NSString *)string {
     
+
+    
+    
     if ([string isEqualToString:@"Success"]) {
         UIAlertView *al = [[UIAlertView alloc]initWithTitle:string message:string delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [al show];
     }else{
         
         NSDictionary *result = [self dictionaryWithJsonString:string];
-        NSDictionary *dataDic = result[@"data"];
+        
+       NSDictionary *dataDic =[result[@"data"] isMemberOfClass:[NSNull class]] ? @{} : result[@"data"];
+        
+//        NSDictionary *dataDic = result[@"data"];
+        
         /// ProgramStart logo页 RollQuestion // 321 倒计时 数字滚动页
         // StartAnswer 开始提示页面
+        
+        
+        
         NSString *stepName = dataDic[@"stepName"];
         
         
@@ -214,76 +222,89 @@
             [self operateView:self.startView withState:NO];
             
         } else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"ProgramStart"]){
+//            self.isFail = NO;
             /// 首页
             [self operateView:self.startView withState:NO];
+            if(!self.isFail){
+                
+                /// 法f观众端 观众端
+                [self sendGroupMessage:@"50"];
+            }
+            
    
-        }else if ([result [@"messageType"]intValue ] == 33){
+        }else if ([result [@"messageType"]intValue ] == 33 ){
+            
             [self.webSocketManager sendDataToServerWithMessageType:@"255" data:@{@"code":@(16),@"message":@"block"}];
             
             
-            if (self.isFail) {
-                return;
+            if (!self.isFail) {
+                /// 数字滚动
+                NSDictionary *dataDic = result[@"data"];
+                self.time = [dataDic[@"rollTimeSpan"] floatValue];
+                self.space = [dataDic[@"waitTimeSpan"] floatValue];
+                
+                dataDic ? [self setRecollNumber:dataDic] :nil;
+                
+
             }
             
-            /// 数字滚动
-            NSDictionary *dataDic = result[@"data"];
-            self.time = [dataDic[@"rollTimeSpan"] floatValue];
-            self.space = [dataDic[@"waitTimeSpan"] floatValue];
+           
             
-            dataDic ? [self setRecollNumber:dataDic] :nil;
-            
-
-            
-            
-        }else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"StartAnswer"] ){
+        }else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"StartAnswer"]){
             // 开始页面tips
             
 //            [self operateView:self.countDownView withState:NO];
 //                        [self.countDownView countDownBegin:3];
             [self.webSocketManager sendDataToServerWithMessageType:@"255" data:@{@"code":@(16),@"message":@"scrollStart"}];
-            [self operateView: self.tipsView withState:NO];
-            self.tipsView.tipsLabel.titleLabel.text =@"开始";
-        }else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"RollQuestion"] ){
+            
+            if (!self.isFail) {
+                [self.tipsView tipsAction:1];
+                [self operateView: self.tipsView withState:NO];
+            }
+            
+            
+        }else if ([result [@"messageType"]intValue ] == 16 &&[stepName isEqualToString:@"RollQuestion"] &&!self.isFail ){
             /// 开始倒计时  倒计时结束到 数字滚动页面
                     [self operateView:self.countDownView withState:NO];
                     [self.countDownView countDownBegin:3];
             
-        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"晋级成功"] ){
+        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"晋级成功"] &&!self.isFail ){
             /// 回到logo页面 晋级成功
-            [self.tipsView.tipsLabel setTitle:@"晋级成功" forState:UIControlStateNormal];
-            [self operateView: self.tipsView withState:NO];
             
+            [self.tipsView answerAction:1];
+            [self operateView: self.tipsView withState:NO];
+            self.isFail = YES;
             
             [self sendGroupMessage:@"20"];
             
             
-        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"晋级失败"] ){
+        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"晋级失败"]&&!self.isFail ){
             /// 回到logo页面 晋级失败
-            [self.tipsView.tipsLabel setTitle:@"晋级失败" forState:UIControlStateNormal];
+            [self.tipsView answerAction:2];
+            
             [self operateView: self.tipsView withState:NO];
             self.isFail = YES;
             
             [self sendGroupMessage:@"30"];
             
-        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"回答错误"] ){
-            [self.tipsView.tipsLabel setTitle:@"回答错误" forState:UIControlStateNormal];
-            /// 回到logo页面 晋级失败
-            [self operateView: self.tipsView withState:NO];
+        }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"回答错误"] &&!self.isFail){
+//            /// 回到logo页面 晋级失败
+//            [self.tipsView answerAction:2];
+//
+//            [self operateView: self.tipsView withState:NO];
+//
+//            self.isFail = YES;
             
-            self.isFail = YES;
-                
+        }else if ([result [@"messageType"]intValue ] == 239){
+            /// 重置
+           self.isFail = NO;
+            [self operateView:self.startView withState:NO];
+            /// 法f观众端 观众端
+            [self sendGroupMessage:@"50"];
+            
         }
-        
-        
-        
-        
-        
-        
-        
+  
     }
-    
-    
-    
 }
 
 #pragma mark 设置数字滚动的事件
@@ -400,7 +421,7 @@
     if (!_submitView) {
         _submitView = [[[NSBundle mainBundle]loadNibNamed:@"SubmitView" owner:nil options:nil]lastObject];
         @weakify(self)
-        _submitView.submitBlock = ^(int time) {
+        _submitView.submitBlock = ^(NSInteger time) {
             @strongify(self)
             [self sendGroupMessage:@"10"];
 

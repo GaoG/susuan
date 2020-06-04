@@ -10,7 +10,7 @@
 
 @implementation UILabel (WordSpacing)
 -(void)setText:(NSString *)text withKeyWord:(NSArray *)keywords withKeyColor:(UIColor *)color {
-    self.font = [UIFont boldSystemFontOfSize:70];
+    
     self.textAlignment = 1;
     if (!text) {
         text = @"";
@@ -23,7 +23,13 @@
     //设置字间距
     NSDictionary *dic = @{NSKernAttributeName:@30.f};
     NSMutableAttributedString * attributedString =     [[NSMutableAttributedString alloc] initWithString:text attributes:dic];
-    
+    if (!keywords.count) {
+        [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:NSMakeRange(0 , text.length)];
+        self.font = [UIFont boldSystemFontOfSize:80];
+    }else{
+     [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0 , text.length)];
+        self.font = [UIFont boldSystemFontOfSize:80];
+    }
     for (NSString *str in keywords) {
 //        if ([text rangeOfString:str].location!=NSNotFound) {
             [attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange([str integerValue], 1)];
@@ -36,28 +42,6 @@
 
 
 
--(void)setText:(NSString *)text withWordSpacing:(float)spacing {
-    
-    self.font = [UIFont boldSystemFontOfSize:70];
-    self.textAlignment = 1;
-    if (!text) {
-        text = @"";
-    }
-    
-    if(spacing < 1.0){
-        spacing = 30.0;
-        
-    }
-        
-    //设置字间距
-    NSDictionary *dic = @{
-                          NSKernAttributeName:@(spacing)
-                          
-                          };
-    NSMutableAttributedString * attributedString =     [[NSMutableAttributedString alloc] initWithString:text attributes:dic];
-    
-    [self setAttributedText:attributedString];
-}
 
 
 @end

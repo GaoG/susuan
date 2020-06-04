@@ -45,7 +45,7 @@
     }
     
     
-     [self.mirrorLabel setText:text withWordSpacing:50.0];
+//     [self.mirrorLabel setText:text withWordSpacing:50.0];
     [self ceshi: type == 2 withView:self.mirrorLabel];
    
 }

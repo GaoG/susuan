@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)setText:(NSString *)text withKeyWord:(NSArray *)keywords withKeyColor:(UIColor *)color;
 
 
--(void)setText:(NSString *)text withWordSpacing:(float)spacing;
+//-(void)setText:(NSString *)text withWordSpacing:(float)spacing;
 
 @end
 

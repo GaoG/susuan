@@ -23,8 +23,9 @@
     
     SNTimer *timer = [[self alloc] init];
     timer.block = block;
+//     dispatch_get_main_queue()
     timer.source = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0,
-                                          dispatch_get_main_queue());
+                                        dispatch_get_global_queue(0, 0));
     uint64_t nsec = (uint64_t)(seconds * NSEC_PER_SEC);
     dispatch_source_set_timer(timer.source, dispatch_time(DISPATCH_TIME_NOW, nsec),
                               nsec, 0);
