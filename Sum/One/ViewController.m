@@ -13,9 +13,7 @@
 #import "SubmitView.h"
 #import "NumberScrollView.h"
 #import "ConfigHeader.h"
-#import "ProgressView.h"
 #import "TipsView.h"
-#import "SecondViewController.h"
 #import "WebSocketManager.h"
 #import "WebSocketManagerA.h"
 #import "GCDAsyncUdpSocket.h"
@@ -39,7 +37,6 @@
 
 @property (nonatomic, strong)NumberScrollView *numberScrollView;
 
-@property (nonatomic, strong)ProgressView *progressView;
 
 @property (nonatomic, strong)NSMutableArray *viewArr;
 
@@ -71,9 +68,7 @@
 
     
     [self initSocket];
-    
-    self.progressView.frame = self.view.bounds;
-    [self.view addSubview:self.progressView];
+
     
     
     self.configView.frame = self.view.bounds;
@@ -107,7 +102,7 @@
 
  
     
-    [self.viewArr addObjectsFromArray:@[self.configView,self.configView,self.countDownView,self.startView,self.submitView,self.numberScrollView,self.progressView,self.tipsView]];
+    [self.viewArr addObjectsFromArray:@[self.configView,self.configView,self.countDownView,self.startView,self.submitView,self.numberScrollView,self.tipsView]];
     
     
     [self operateView:self.configView withState:NO];
@@ -280,9 +275,10 @@
             
         }else if ([result [@"messageType"]intValue ] == 32 &&[dataDic[@"message"]isEqualToString:@"晋级失败"]&&!self.isFail ){
             /// 回到logo页面 晋级失败
-            [self.tipsView answerAction:2];
-            
-            [self operateView: self.tipsView withState:NO];
+//            [self.tipsView answerAction:2];
+//
+//            [self operateView: self.tipsView withState:NO];
+            [self operateView:self.startView withState:NO];
             self.isFail = YES;
             
             [self sendGroupMessage:@"30"];
@@ -459,15 +455,6 @@
 }
 
 
--(ProgressView *)progressView {
-    
-    if (!_progressView) {
-        _progressView = [[[NSBundle mainBundle]loadNibNamed:@"ProgressView" owner:nil options:nil]lastObject];
-        
-    }
-    
-    return _progressView;
-}
 
 -(NSMutableArray *)viewArr{
     
